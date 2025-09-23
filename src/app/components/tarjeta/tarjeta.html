@@ -1,0 +1,10 @@
+<div class="d-flex align-items-center border rounded p-3 mb-3 shadow-sm bg-white">
+  <img [src]="card.imagen"
+       [alt]="card.titulo"
+       class="img-thumbnail me-3"
+       style="width:100px;height:100px;object-fit:cover;">
+  <div class="flex-grow-1">
+    <h5 class="text-center mb-2">{{ card.titulo }}</h5>
+    <p class="mb-0">{{ card.descripcion }}</p>
+  </div>
+</div>

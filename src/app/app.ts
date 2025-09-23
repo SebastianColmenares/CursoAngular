@@ -1,11 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Menu } from './components/menu/menu';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, Menu],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrls: ['./app.scss']
 })
-export class App {
-  protected readonly title = signal('CursoAngular');
+export class AppComponent {
+  constructor() { console.log('Hola Mundo'); }
 }
