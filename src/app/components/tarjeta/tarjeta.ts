@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Card } from '../interface/card';
 
@@ -11,4 +11,13 @@ import { Card } from '../interface/card';
 })
 export class Tarjeta {
   @Input() card!: Card;
+
+  @Output() selectedCard = new EventEmitter<number>();
+
+  @Input() indice:number = 0;
+
+  seleccionarCard() {
+    console.log("Tarjeta seleccionada:", this.card.titulo);
+    this.selectedCard.emit(this.indice);
+  }
 }

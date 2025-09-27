@@ -4,15 +4,106 @@
   </div>
 
   <div class="row">
-    <div class="col-12">
-      @for (elemento of cards; track elemento.titulo) {
-        <app-tarjeta [card]="elemento"></app-tarjeta>
+    <div class="col-8">
+      @for (elemento of cards; track elemento; let indiceActual = $index) {
+        <app-tarjeta [indice]="indiceActual" (selectedCard)="recibirValor($event)" [card]="elemento"></app-tarjeta>
       }
     </div>
+    <div class="col-4">
+      <div class="row">
+        <div class="col-12 mt-2"><label>Ingredientes</label></div>
+      </div>
+
+      <div class="card">
+        <ul>
+          @for (ingrediente of cards[indiceSeleccionado].ingredientes; track ingrediente) {
+            <li>{{ ingrediente }}</li>
+          }
+        </ul>
+      </div>
   </div>
 
+  
   <div class="d-flex justify-content-center mt-3">
-    <button class="btn btn-primary">Agregar pastel</button>
+    <button class="btn btn-success" (click)="flipformulario()">
+      {{ formularioVisible ? 'Cerrar' : 'Agregar pastel' }}
+    </button>
   </div>
 </div>
 
+<div class="container mt-4" *ngIf="formularioVisible">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title text-center mb-3">Nuevo pastel</h5>
+
+      <form #f="ngForm" (ngSubmit)="agregarPastel(f)">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Título</label>
+            <input
+              type="text"
+              class="form-control"
+              name="titulo"
+              [(ngModel)]="newCard.titulo"
+              required
+              minlength="3"
+              #titulo="ngModel"
+              [class.is-invalid]="titulo.invalid && titulo.touched"
+            />
+            <div class="invalid-feedback" *ngIf="titulo.errors?.['required']">El título es requerido.</div>
+            <div class="invalid-feedback" *ngIf="titulo.errors?.['minlength']">Mínimo 3 caracteres.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Descripción</label>
+            <input
+              type="text"
+              class="form-control"
+              name="descripcion"
+              [(ngModel)]="newCard.descripcion"
+              required
+              minlength="5"
+              #descripcion="ngModel"
+              [class.is-invalid]="descripcion.invalid && descripcion.touched"
+            />
+            <div class="invalid-feedback" *ngIf="descripcion.errors?.['required']">La descripción es requerida.</div>
+            <div class="invalid-feedback" *ngIf="descripcion.errors?.['minlength']">Mínimo 5 caracteres.</div>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Imagen</label>
+            <select
+              type="url"
+              class="form-control"
+              name="imagen"
+              [(ngModel)]="newCard.imagen" 
+              required
+              #imagen="ngModel"
+              [class.is-valid]="imagen.invalid && imagen.touched"
+
+            >
+              <option value="img/Pastelchocolate.png">Chocolate</option>
+              <option value="img/StrawberryCake.jpg">Fresa</option>
+              <option value="img/vanillaCake.jpg">Vainilla</option>
+            </select>
+          </div>
+
+          <div class="col-12 d-flex justify-content-center">
+            <img
+              [src]="newCard.imagen"
+              alt="Vista previa"
+              class="img-thumbnail mt-2"
+              style="width: 120px; height: 120px; object-fit: cover;"
+            />
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+          <button class="btn btn-primary px-4" type="submit" [disabled]="f.invalid">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
